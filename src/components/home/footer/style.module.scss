@@ -1,0 +1,40 @@
+.footer {
+  @apply relative;
+  @apply overflow-hidden;
+  @apply bg-black;
+  @apply pt-[39.19%];
+
+  &::after {
+    content: '';
+    position: absolute;
+    @apply absolute;
+    @apply top-0;
+    @apply left-0;
+    @apply w-full;
+    @apply h-full;
+    @apply pointer-events-none;
+    background-image: linear-gradient(0deg, #333 0px, #333 1px, transparent 1px, transparent 100px),
+      linear-gradient(90deg, #333 0px, #333 1px, transparent 1px, transparent 100px);
+    background-size: 50px 50px;
+    opacity: 0.8;
+  }
+
+  .footer-content {
+    @apply absolute;
+    @apply top-0;
+    @apply left-0;
+    @apply w-full;
+    @apply h-full;
+    @apply p-3;
+    @apply flex;
+    @apply justify-center;
+    @apply items-center;
+    @apply gap-8;
+    @apply z-10;
+
+    .img {
+      width: 250px;
+      height: 226px;
+    }
+  }
+}

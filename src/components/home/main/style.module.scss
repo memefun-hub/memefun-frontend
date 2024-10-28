@@ -1,0 +1,35 @@
+.main {
+  @apply flex-1;
+  @apply relative;
+  @apply overflow-hidden;
+  @apply py-[2.625rem];
+  @apply flex;
+  @apply flex-col;
+  background-color: greenyellow;
+
+  .main-content {
+    @apply flex-1;
+    @apply w-full;
+    @apply p-3;
+    @apply flex;
+    @apply flex-col;
+
+    .main-content-group {
+      @apply flex-1;
+      @apply w-[90%];
+      @apply md:w-[80%];
+      @apply mx-auto;
+      @apply flex;
+      @apply flex-col;
+      @apply bg-[#2E2D2B];
+
+      .main-content-group-no-data {
+        @apply flex-1;
+        @apply min-h-[120px];
+        @apply flex;
+        @apply justify-center;
+        @apply items-center;
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+type importTokenResult = 
+ variant {
+   Err: text;
+   Ok;
+ };
+type X = 
+ service {
+   add_controller: (text, text) -> (text);
+   add_meme_info: (MeMeCoinInfo) -> (text);
+   add_reinstall: (vec nat8, vec nat8, text) -> (text);
+   back_icp: () -> ();
+   balance: () -> (record {
+                     cycles_bance: nat;
+                     icp_balance: nat;
+                   });
+   clean_mint_logs: () -> (text);
+   delete_canister: (text) -> (text);
+   delete_canisters: (text) -> (text);
+   get_wallet_address: () -> (text);
+   import_icpesx_token: (text, text) -> (importTokenResult);
+   mint: (text, text, text, nat, text, text, text) -> (text);
+   query_ransaction_curve: () -> (text);
+   query_result: (text) -> (opt text);
+   showMintLogs: () -> (vec MintLog) query;
+   show_all_meme: () -> (vec record {
+                               text;
+                               MeMeCoinInfo;
+                             });
+   show_log: () -> (vec text) query;
+ };
+type MintLog = 
+ record {
+   endTime: int;
+   msg: text;
+   startTime: int;
+ };
+type MeMeCoinInfo = 
+ record {
+   canister_id: text;
+   create_time: int;
+   description: text;
+   image: text;
+   name: text;
+   token_symbol: text;
+ };
+service : () -> X

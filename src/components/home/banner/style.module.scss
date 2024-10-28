@@ -1,0 +1,45 @@
+.banner {
+  @apply relative;
+  @apply overflow-hidden;
+  @apply bg-black;
+  @apply pt-[50%];
+  @apply md:pt-[35.19%];
+
+  &::after {
+    content: '';
+    position: absolute;
+    @apply absolute;
+    @apply top-0;
+    @apply left-0;
+    @apply w-full;
+    @apply h-full;
+    @apply pointer-events-none;
+    @apply border-0;
+    background-image: linear-gradient(0deg, #333 0px, #333 1px, transparent 1px, transparent 100px),
+      linear-gradient(90deg, #333 0px, #333 1px, transparent 1px, transparent 100px);
+    background-size: 50px 50px;
+    opacity: 0.8;
+  }
+
+  .banner-content {
+    @apply absolute;
+    @apply inset-0;
+    @apply p-3;
+    @apply z-10;
+  }
+
+  .stock {
+    @apply relative;
+    @apply md:text-3xl;
+    @apply text-[#19E62F];
+
+    &::after {
+      content: attr(data-content);
+      -webkit-text-stroke: 1px #000;
+      @apply absolute;
+      @apply top-0;
+      @apply left-0;
+      z-index: -1;
+    }
+  }
+}

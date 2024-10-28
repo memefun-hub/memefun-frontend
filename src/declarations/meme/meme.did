@@ -1,0 +1,275 @@
+type Value = 
+ variant {
+   Blob: blob;
+   Int: int;
+   Nat: nat;
+   Text: text;
+ };
+type UserBalanceShow = 
+ record {
+   account_id: text;
+   amount: nat;
+   "principal": opt principal;
+ };
+type TransferResult__1 = 
+ variant {
+   Err: TransferError;
+   Ok: BlockIndex;
+ };
+type TransferResult = 
+ variant {
+   Err: TransferError;
+   Ok: BlockIndex;
+ };
+type TransferFromResult = 
+ variant {
+   Err: TransferFromError;
+   Ok: nat;
+ };
+type TransferFromError = 
+ variant {
+   BadBurn: record {min_burn_amount: nat;};
+   BadFee: record {expected_fee: nat;};
+   CreatedInFuture: record {ledger_time: nat;};
+   Duplicate: record {duplicate_of: nat;};
+   GenericError: record {
+                   error_code: nat;
+                   message: text;
+                 };
+   InsufficientAllowance: record {allowance: nat;};
+   InsufficientFunds: record {balance: nat;};
+   TemporarilyUnavailable;
+   TooOld;
+ };
+type TransferError = 
+ variant {
+   BadBurn: record {min_burn_amount: nat;};
+   BadFee: record {expected_fee: nat;};
+   CreatedInFuture: record {ledger_time: nat64;};
+   Duplicate: record {duplicate_of: BlockIndex;};
+   GenericError: record {
+                   error_code: nat;
+                   message: text;
+                 };
+   InsufficientFunds: record {balance: nat;};
+   TemporarilyUnavailable;
+   TooOld;
+ };
+type Tokens__1 = nat;
+type Tokens = nat;
+type Timestamp__1 = nat64;
+type Timestamp = nat64;
+type Subaccount__1 = blob;
+type Subaccount = blob;
+type Result = 
+ variant {
+   Err: text;
+   Ok: nat;
+ };
+type Memo = blob;
+type MeMeTransactionType = 
+ variant {
+   Approve;
+   Burn;
+   Mint;
+   Transfer;
+ };
+type MeMeTransactionStatus = 
+ variant {
+   Complete;
+   Error;
+ };
+type MeMeTransactionLog = 
+ record {
+   from: principal;
+   icp_amount: nat;
+   index: nat;
+   meme_amount: nat;
+   t_type: MeMeTransactionType;
+   timestamp: Timestamp;
+   to: principal;
+   usdt: float64;
+ };
+type MeMeTransaction = 
+ record {
+   amount: nat;
+   fee: opt nat;
+   from: principal;
+   memo: opt blob;
+   spender_account: opt principal;
+   t_hash: text;
+   t_index: nat;
+   t_status: MeMeTransactionStatus;
+   t_timestamp: nat;
+   t_type: MeMeTransactionType;
+   to: opt principal;
+ };
+type MeMeCoin = 
+ service {
+   back_icp: () -> ();
+   buy: (nat, text) -> (TransferResult);
+   create_account: () -> (text) query;
+   cycleBalance: () -> (nat) query;
+   destroy:
+    (record {
+       amount: Tokens;
+       created_at_time: opt Timestamp__1;
+       fee: opt Tokens;
+       memo: opt Memo;
+       user: Account__1;
+     }) -> (TransferResult__1);
+   do_call_icpex: () -> (Result);
+   do_call_icpex_approve: (nat) -> (Result);
+   do_launch: () -> (text);
+   get_address: () -> (text);
+   get_icp_usd_price: () -> (float64);
+   get_real_icp_balance: () -> (nat);
+   icp_buy: (principal, nat) -> (TransferResult);
+   icp_sell: (principal, nat) -> (TransferResult);
+   icp_total_amount: () -> (nat);
+   icrc1_balance_of: (Account__1) -> (Tokens) query;
+   icrc1_decimals: () -> (nat8) query;
+   icrc1_fee: () -> (nat) query;
+   icrc1_metadata: () -> (vec record {
+                                text;
+                                Value;
+                              }) query;
+   icrc1_minting_account: () -> (opt Account__1) query;
+   icrc1_name: () -> (text) query;
+   icrc1_supported_standards: () ->
+    (vec record {
+           name: text;
+           url: text;
+         }) query;
+   icrc1_symbol: () -> (text) query;
+   icrc1_total_supply: () -> (Tokens) query;
+   icrc1_transfer:
+    (record {
+       amount: Tokens;
+       created_at_time: opt Timestamp__1;
+       fee: opt Tokens;
+       from_subaccount: opt Subaccount__1;
+       memo: opt Memo;
+       to: Account__1;
+     }) -> (TransferResult__1);
+   icrc2_allowance: (record {
+                       account: Account__1;
+                       spender: principal;
+                     }) -> (Tokens__1) query;
+   icrc2_approve:
+    (record {
+       amount: Tokens;
+       created_at_time: opt Timestamp__1;
+       fee: opt Tokens;
+       from_subaccount: opt Subaccount__1;
+       memo: opt Memo;
+       spender: Account;
+     }) -> (ApproveResult);
+   icrc2_transfer_from:
+    (record {
+       amount: Tokens;
+       created_at_time: opt Timestamp__1;
+       fee: opt Tokens;
+       from: Account;
+       memo: opt Memo;
+       spender_subaccount: opt Subaccount__1;
+       to: Account;
+     }) -> (TransferFromResult);
+   init_main_balance: () -> ();
+   launch_able: () -> (bool);
+   main_balance_show: () -> (UserBalanceShow) query;
+   meme_total_amount: () -> (Tokens) query;
+   query_call_icpex_log: () -> (vec text) query;
+   query_icp_count: (nat, text) -> (nat);
+   query_meme_count: (nat, text) -> (nat);
+   query_quxian_log: () -> (vec text) query;
+   query_result: (text) -> (opt TransferResult);
+   sell: (nat, text) -> (TransferResult);
+   set_init_icp_amount: (nat, text) -> (nat);
+   show_all_icp_transaction_logs: () -> (vec ICPTransaction);
+   show_balance_map: () -> (vec record {
+                                  text;
+                                  UserBalanceShow;
+                                }) query;
+   show_cost_log: () -> (vec text) query;
+   show_detail_info: () ->
+    (record {
+       base_info:
+        record {
+          canister_id: text;
+          create_account: text;
+          icpex_pool_canister_id: text;
+          launch: bool;
+          logo: text;
+          token_name: text;
+          token_symbol: text;
+        };
+       market_info:
+        record {
+          current_price: nat;
+          market_cap: nat;
+          mobility: nat;
+          one_day_trading_volume: nat;
+        };
+     });
+   show_last_log: () -> (opt MeMeTransactionLog) query;
+   show_logs: () -> (vec MeMeTransactionLog) query;
+   show_meme_transaction: () -> (vec MeMeTransaction) query;
+   total_icp_transcation_amount: () -> (nat) query;
+   total_icp_transcation_one_day_amount: () -> (nat) query;
+   update_config: (opt nat, opt nat, opt nat) -> (text);
+   withdraw_all: () -> (text);
+ };
+type ICPTransaction = 
+ record {
+   amount: nat;
+   fee: nat;
+   from: text;
+   icp_chain_index: nat;
+   timestamp: Timestamp;
+   to: text;
+   usdt_amount: nat;
+ };
+type BlockIndex = nat;
+type ApproveResult = 
+ variant {
+   Err: ApproveError;
+   Ok: Tokens__1;
+ };
+type ApproveError = 
+ variant {
+   AllowanceChanged: record {current_allowance: nat;};
+   BadFee: record {expected_fee: nat;};
+   CreatedInFuture: record {ledger_time: nat;};
+   Duplicate: record {duplicate_of: nat;};
+   Expired: record {ledger_time: nat;};
+   GenericError: record {
+                   error_code: nat;
+                   message: text;
+                 };
+   InsufficientFunds: record {balance: nat;};
+ };
+type Account__1 = 
+ record {
+   owner: principal;
+   subaccount: opt Subaccount;
+ };
+type Account = 
+ record {
+   owner: principal;
+   subaccount: opt Subaccount;
+ };
+service : (record {
+             create_account: principal;
+             decimals: nat8;
+             logo: text;
+             logo_base64: text;
+             metadata: vec record {
+                             key: text;
+                             value: text;
+                           };
+             token_name: text;
+             token_symbol: text;
+             total_supply: nat;
+             transfer_fee: nat;
+           }) -> MeMeCoin

@@ -1,0 +1,10 @@
+@import './tailwind.css';
+
+html {
+  @apply text-[8.95833px];
+  @apply md:text-base;
+}
+
+body {
+  font-family: Poppins, Roboto, sans-serif;
+}
